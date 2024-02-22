@@ -1,0 +1,19 @@
+{
+  "name": "back-end",
+  "version": "1.0.0",
+  "description": "global white board back end",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abhinaykhalatkar/Global-Whiteboard.git"
+  },
+  "author": "abhinay khalatkar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/abhinaykhalatkar/Global-Whiteboard/issues"
+  },
+  "homepage": "https://github.com/abhinaykhalatkar/Global-Whiteboard#readme"
+}
