@@ -3,16 +3,18 @@ import { Response } from "express";
 
 const generateToken = (res: Response, userId: string) => {
   const jwtSecret = process.env.JWT_SECRET || "";
+
   const token = jwt.sign({ userId }, jwtSecret, {
     expiresIn: "1h",
   });
 
-  res.cookie("jwt", token, {
+  res.cookie("jwt-access-key", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV !== "development",
     sameSite: "strict",
     maxAge: 60 * 60 * 1000,
   });
+  return token;
 };
 
 const clearToken = (res: Response) => {

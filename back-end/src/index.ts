@@ -6,13 +6,12 @@ import cors from "cors";
 import connectUserDB from "./connections/userDB";
 
 dotenv.config();
-
+connectUserDB();
 const app = express();
 app.use(express.json());
 app.use(cors());
 const port = process.env.PORT || 3010;
 
-connectUserDB();
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

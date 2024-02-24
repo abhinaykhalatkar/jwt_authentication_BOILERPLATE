@@ -1,34 +1,3 @@
-// import mongoose from "mongoose";
-// import bcrypt from "bcrypt";
-// import { Schema } from "mongoose";
-
-// interface UserSchemaIn {
-//   email: string;
-//   hash_password: string;
-//   tokenGernratedOn: Date;
-// }
-// var UserSchema = new Schema<UserSchemaIn>({
-//   email: {
-//     type: String,
-//     unique: true,
-//     lowercase: true,
-//     trim: true,
-//     required: true,
-//   },
-//   hash_password: {
-//     type: String,
-//   },
-//   tokenGernratedOn: {
-//     type: Date,
-//     default: Date.now,
-//   },
-// });
-
-// UserSchema.methods.comparePassword = function (password: string) {
-//   return bcrypt.compareSync(password, this.hash_password);
-// };
-
-// mongoose.model("User", UserSchema);
 import mongoose, { Document, Schema } from "mongoose";
 import bcrypt from "bcryptjs";
 
