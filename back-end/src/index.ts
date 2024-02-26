@@ -1,12 +1,11 @@
 import express from "express";
 import dotenv from "dotenv";
-import authRouter from "./routes/authRouter";
 import bodyParser from "body-parser";
 import cors from "cors";
 import connectUserDB from "./connections/userDB";
 import cookieParser from "cookie-parser";
 import { errorHandler } from "./middleware/errorMiddleware";
-import userRouter from "./routes/userRouter";
+import Router from "./routes/router";
 import { authenticate } from "./middleware/authMiddleware";
 import helmet from "helmet";
 
@@ -44,9 +43,9 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
-app.use(authRouter);
+app.use(Router);
 
-app.use("/users", authenticate, userRouter);
+app.use("/users", authenticate, Router);
 
 app.use(errorHandler);
 
