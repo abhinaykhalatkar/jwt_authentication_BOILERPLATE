@@ -9,7 +9,7 @@ export const authenticateUser = async (req: Request, res: Response) => {
   if (user && (await user.comparePassword(password))) {
     generateToken(res, user._id);
     res.status(201).json({
-      id: user._id,
+      // id: user._id,
       name: user.name,
       email: user.email,
     });

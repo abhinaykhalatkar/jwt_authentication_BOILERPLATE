@@ -1,14 +1,13 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import User from "../models/userModel";
 import asyncHandler from "express-async-handler";
-import { AuthenticationError } from "./errorMiddleware";
 import { clearToken } from "../utils/auth";
 
-export const authenticate = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
+export const initialAuthenticate = asyncHandler(
+  async (req: Request, res: Response) => {
     try {
-      let token = req.cookies.jwt;
+      let token = req.cookies["jwt-access-key"];
 
       if (!token) {
         clearToken(res, false);
@@ -21,20 +20,21 @@ export const authenticate = asyncHandler(
         clearToken(res, true);
       }
 
-      if (decoded.exp && Date.now() >= decoded.exp * 1000) {
-        clearToken(res, true);
-      }
-
-      const user = await User.findById(decoded.userId, "_id name email");
+      const user: { name: string; email: string; password: string } | null =
+        await User.findOne({ _id: decoded.userId });
 
       if (!user) {
         clearToken(res, true);
       }
 
-      req.user = user;
-      next();
+      if (user && user.name)
+        res.status(201).json({
+          // id: user._id,
+          name: user.name,
+          email: user.email,
+        });
     } catch (e) {
-      throw new AuthenticationError("Invalid token");
+      throw console.log("Invalid token");
     }
   }
 );

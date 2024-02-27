@@ -8,6 +8,7 @@ import { errorHandler } from "./middleware/errorMiddleware";
 import Router from "./routes/router";
 import { authenticate } from "./middleware/authMiddleware";
 import helmet from "helmet";
+import { initialAuthenticate } from "./controllers/initJwtAuthController";
 
 dotenv.config();
 
@@ -46,7 +47,7 @@ app.listen(port, () => {
 app.use(Router);
 
 app.use("/users", authenticate, Router);
-app.use("/", authenticate, Router);
+// app.use("/", initialAuthenticate);
 
 app.use(errorHandler);
 
