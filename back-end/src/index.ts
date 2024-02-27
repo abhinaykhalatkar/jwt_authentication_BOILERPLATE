@@ -46,6 +46,7 @@ app.listen(port, () => {
 app.use(Router);
 
 app.use("/users", authenticate, Router);
+app.use("/", authenticate, Router);
 
 app.use(errorHandler);
 
