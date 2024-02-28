@@ -15,9 +15,16 @@ export const initialAuthenticate = asyncHandler(
 
       const jwtSecret = process.env.JWT_SECRET || "";
       const decoded = jwt.verify(token, jwtSecret) as JwtPayload;
+      console.log(decoded);
 
       if (!decoded || !decoded.userId) {
         clearToken(res, true);
+        return;
+      }
+
+      if (decoded.exp && Date.now() >= decoded.exp * 1000) {
+        clearToken(res, true);
+        return;
       }
 
       const user: { name: string; email: string; password: string } | null =
@@ -25,6 +32,7 @@ export const initialAuthenticate = asyncHandler(
 
       if (!user) {
         clearToken(res, true);
+        return;
       }
 
       if (user && user.name)
