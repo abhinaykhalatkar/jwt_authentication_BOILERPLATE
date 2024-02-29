@@ -15,7 +15,6 @@ export const initialAuthenticate = asyncHandler(
 
       const jwtSecret = process.env.JWT_SECRET || "";
       const decoded = jwt.verify(token, jwtSecret) as JwtPayload;
-      console.log(decoded);
 
       if (!decoded || !decoded.userId) {
         clearToken(res, true);
