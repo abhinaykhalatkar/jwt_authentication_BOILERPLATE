@@ -1,24 +1,25 @@
-import * as actionTypes from "./actionTypes";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: UserInfo = {
-  isLoggedIn: true,
-  userEmail: "abhinay@test.com",
-};
-const reducer = (
-  state: UserInfo = initialState,
-  action: UserInfoAction
-): UserInfo => {
-  switch (action.type) {
-    case actionTypes.ADD_USER:
-      return {
-        isLoggedIn: action.userInfo.isLoggedIn,
-        userEmail: action.userInfo.userEmail,
-      };
-
-    case actionTypes.REMOVE_USER:
-      return { isLoggedIn: false, userEmail: "" };
-  }
-  return state;
+  isLoggedIn: false,
+  userEmail: "",
 };
 
-export default reducer;
+export const userInfoSlice = createSlice({
+  name: "updateUserInfo",
+  initialState: initialState,
+  reducers: {
+    addUser: (state: UserInfo, action: PayloadAction<UserInfo>) => {
+      state.isLoggedIn = action.payload.isLoggedIn;
+      state.userEmail = action.payload.userEmail;
+    },
+    removeUser: (state: UserInfo) => {
+      state.isLoggedIn = false;
+      state.userEmail = "";
+    },
+  },
+});
+
+export const { addUser, removeUser } = userInfoSlice.actions;
+
+export default userInfoSlice.reducer;

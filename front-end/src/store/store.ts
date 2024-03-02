@@ -1,5 +1,12 @@
-import { createStore } from "redux";
-// import rootReducer from './reducers'; // Assume you have a root reducer
+import { configureStore } from "@reduxjs/toolkit";
+import counterReducer from "./reducer";
 
-const store = "a";
+const store = configureStore({
+  reducer: {
+    counter: counterReducer,
+  },
+});
+
 export default store;
+
+export type RootState = ReturnType<typeof store.getState>;
