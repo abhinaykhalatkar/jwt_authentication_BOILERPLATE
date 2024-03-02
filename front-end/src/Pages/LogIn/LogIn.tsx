@@ -1,16 +1,24 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import './LogIn.scss';
+import {addUser} from "../../store/slices/userInfoSlice"
+import {RootState} from "../../store/store"
+import { useDispatch ,useSelector} from "react-redux";
+
 
 interface FormInputs{
     email:string;
     password:string;
 }
 
-export const LogIn:React.FC=() =>{
+export const LogIn:React.FC=(props) =>{
+  const userInfo: UserInfo = useSelector(
+    (state: RootState) => state.userInfo
+  );
     const [values, setValues] = useState<FormInputs>({
       email: "",
       password: "",
     });
+    const dispatch = useDispatch();
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = e.target;
       setValues((prevValues) => ({
@@ -18,23 +26,26 @@ export const LogIn:React.FC=() =>{
         [name]: value,
       }));
     };
+    useEffect(() => {
+      console.log(userInfo); 
+    }, [userInfo]); 
   
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  
+    const HandleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      // Implement your login logic here
-      console.log('Form submitted:', values);
-      // Reset form after submission
+      dispatch(addUser({isLoggedIn:values.email?true:false,userEmail: values.email}));
       setValues({ email: '', password: '' });
     };
   
     return (
       <div>
         <h2>Login</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={HandleSubmit}>
           <div>
             <label>Email:</label>
+           
             <input
-              type="email"
+              type="text"
               name="email"
               value={values.email}
               onChange={handleChange}
@@ -44,7 +55,7 @@ export const LogIn:React.FC=() =>{
           <div>
             <label>Password:</label>
             <input
-              type="password"
+              type="text"
               name="password"
               value={values.password}
               onChange={handleChange}
@@ -52,6 +63,8 @@ export const LogIn:React.FC=() =>{
             />
           </div>
           <button type="submit">Login</button>
+          <div>
+          </div>
         </form>
       </div>
     );
