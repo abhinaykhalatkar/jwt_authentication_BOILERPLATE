@@ -9,9 +9,9 @@ const generateToken = (res: Response, userId: string) => {
   });
 
   res.cookie("jwt-access-key", token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV !== "development",
-    sameSite: "strict",
+    httpOnly: false,
+    secure: true,
+    sameSite: "lax",
     maxAge: 60 * 60 * 1,
   });
   return token;

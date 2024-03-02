@@ -41,7 +41,7 @@ export const initialAuthenticate = asyncHandler(
           email: user.email,
         });
     } catch (e) {
-      throw console.log("Invalid token");
+      throw console.log("Invalid tokens");
     }
   }
 );

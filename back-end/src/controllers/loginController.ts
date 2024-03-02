@@ -5,11 +5,11 @@ import { generateToken, clearToken } from "../utils/auth";
 export const authenticateUser = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
+  console.log(req.cookies["jwt-access-key"]);
 
-  if (user && (await user.comparePassword(password))) {
+  if (user && user.comparePassword(password)) {
     generateToken(res, user._id);
     res.status(201).json({
-      // id: user._id,
       name: user.name,
       email: user.email,
     });
