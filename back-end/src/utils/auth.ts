@@ -7,7 +7,6 @@ const generateToken = (res: Response, userId: string) => {
   const token = jwt.sign({ userId }, jwtSecret, {
     expiresIn: "1h",
   });
-
   res.cookie("jwt-access-key", token, {
     httpOnly: false,
     secure: true,
