@@ -5,10 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 export const LogOutBtn: React.FC = () => {
   const userInfo: UserInfo = useSelector((state: RootState) => state.userInfo);
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
   const logOutHandler = () => {
     dispatch(removeUser());
+    localStorage.removeItem(process.env.REACT_APP_T0509!);
   };
 
   return (

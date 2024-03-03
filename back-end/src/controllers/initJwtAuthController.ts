@@ -7,7 +7,9 @@ import { clearToken } from "../utils/auth";
 export const initialAuthenticate = asyncHandler(
   async (req: Request, res: Response) => {
     try {
-      let token = req.cookies["jwt-access-key"];
+      const token = req.headers["authorization"]
+        ? req.headers["authorization"].split(" ")[1]
+        : "";
 
       if (!token) {
         clearToken(res, false);

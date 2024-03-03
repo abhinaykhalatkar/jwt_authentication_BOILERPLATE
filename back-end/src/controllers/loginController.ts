@@ -9,6 +9,10 @@ export const authenticateUser = async (req: Request, res: Response) => {
     let isMatch = await user.comparePassword(password);
     if (isMatch) {
       let token = generateToken(res, user._id);
+      res.set({
+        "Access-Control-Expose-Headers": "Authorization",
+      });
+
       res.set("Authorization", `Bearer ${token}`);
       // console.log(
       //   `${process.env.FRONT_END_CALLBACK_URI}?token=${token}&email=${user.email}&username=${user.name}`

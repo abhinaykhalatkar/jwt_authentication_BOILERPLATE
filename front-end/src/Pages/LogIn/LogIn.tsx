@@ -3,7 +3,7 @@ import "./LogIn.scss";
 import { addUser } from "../../store/slices/userInfoSlice";
 import { RootState } from "../../store/store";
 import { useDispatch, useSelector } from "react-redux";
-import axios, { AxiosResponse, AxiosError } from "axios";
+import axios from "axios";
 
 interface FormInputs {
   email: string;
@@ -12,11 +12,13 @@ interface FormInputs {
 
 const LogIn: React.FC = () => {
   const userInfo: UserInfo = useSelector((state: RootState) => state.userInfo);
+
+  const dispatch = useDispatch();
+
   const [values, setValues] = useState<FormInputs>({
     email: "",
     password: "",
   });
-  const dispatch = useDispatch();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -32,12 +34,16 @@ const LogIn: React.FC = () => {
         process.env.REACT_APP_LOGIN_LINK!,
         values
       );
-      if (response.headers) {
-        console.log(response.headers);
-      }
-
-      // const token = response.headers["Authorization"].split(" ")[1];
-      // console.log("Response:", token);
+      const token = response.headers["authorization"]
+        ? response.headers["authorization"].split(" ")[1]
+        : "";
+      localStorage.setItem(process.env.REACT_APP_T0509!, token);
+      dispatch(
+        addUser({
+          isLoggedIn: response.data.hasOwnProperty("name"),
+          userEmail: response.data.email,
+        })
+      );
     } catch (error) {
       console.error("Error:", error);
     }
