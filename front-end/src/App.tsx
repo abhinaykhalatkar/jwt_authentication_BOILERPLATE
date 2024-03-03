@@ -7,6 +7,7 @@ import Signup from "./Pages/SignUp/Signup";
 import { RootState } from "./store/store";
 import { useDispatch, useSelector } from "react-redux";
 import LogOutBtn from "./Components/LogOutBtn/LogOutBtn";
+import CallbackPage from "./Pages/Callback/CallbackPage";
 
 function App() {
   const userInfo: UserInfo = useSelector((state: RootState) => state.userInfo);
@@ -23,8 +24,9 @@ function App() {
       </nav>
 
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" caseSensitive element={<Home />} />
         <Route path="/login" element={<LogIn />} />
+        <Route path="/callback" element={<CallbackPage />} />
         <Route
           path="/live"
           element={userInfo.isLoggedIn ? <Live /> : <Navigate to="/login" />}

@@ -5,11 +5,17 @@ import { generateToken, clearToken } from "../utils/auth";
 export const authenticateUser = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
-  console.log(req.cookies["jwt-access-key"]);
   if (user) {
     let isMatch = await user.comparePassword(password);
     if (isMatch) {
-      generateToken(res, user._id);
+      let token = generateToken(res, user._id);
+      res.set("Authorization", `Bearer ${token}`);
+      // console.log(
+      //   `${process.env.FRONT_END_CALLBACK_URI}?token=${token}&email=${user.email}&username=${user.name}`
+      // );
+      // res.redirect(
+      //   `${process.env.FRONT_END_CALLBACK_URI}?token=${token}&email=${user.email}&username=${user.name}`
+      // );
 
       res.status(201).json({
         name: user.name,

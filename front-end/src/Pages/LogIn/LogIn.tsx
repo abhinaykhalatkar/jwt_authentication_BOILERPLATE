@@ -32,8 +32,12 @@ const LogIn: React.FC = () => {
         process.env.REACT_APP_LOGIN_LINK!,
         values
       );
+      if (response.headers) {
+        console.log(response.headers);
+      }
 
-      console.log("Response:", response);
+      // const token = response.headers["Authorization"].split(" ")[1];
+      // console.log("Response:", token);
     } catch (error) {
       console.error("Error:", error);
     }
