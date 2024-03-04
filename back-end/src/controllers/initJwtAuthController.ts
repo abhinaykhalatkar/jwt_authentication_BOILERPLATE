@@ -12,27 +12,30 @@ export const initialAuthenticate = asyncHandler(
         : "";
 
       if (!token) {
-        clearToken(res, false);
+        clearToken(res);
+        res.status(401).json({ message: "No token" });
+        return;
       }
 
       const jwtSecret = process.env.JWT_SECRET || "";
       const decoded = jwt.verify(token, jwtSecret) as JwtPayload;
 
       if (!decoded || !decoded.userId) {
-        clearToken(res, true);
+        clearToken(res);
         return;
       }
 
       if (decoded.exp && Date.now() >= decoded.exp * 1000) {
-        clearToken(res, true);
+        clearToken(res);
         return;
       }
+      // const user: { name: string; email: string; password: string } | null =
+      // await User.findOne({ _id: decoded.userId });
 
-      const user: { name: string; email: string; password: string } | null =
-        await User.findOne({ _id: decoded.userId });
+      const user = await User.findOne({ _id: decoded.userId });
 
       if (!user) {
-        clearToken(res, true);
+        clearToken(res);
         return;
       }
 

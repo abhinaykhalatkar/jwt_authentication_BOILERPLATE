@@ -14,21 +14,11 @@ export const authenticateUser = async (req: Request, res: Response) => {
       });
 
       res.set("Authorization", `Bearer ${token}`);
-      // console.log(
-      //   `${process.env.FRONT_END_CALLBACK_URI}?token=${token}&email=${user.email}&username=${user.name}`
-      // );
-      // res.redirect(
-      //   `${process.env.FRONT_END_CALLBACK_URI}?token=${token}&email=${user.email}&username=${user.name}`
-      // );
 
       res.status(201).json({
         name: user.name,
         email: user.email,
       });
-      // res.send({
-      //   name: user.name,
-      //   email: user.email,
-      // })
     } else {
       res.status(401).json({ message: "User not found / password incorrect" });
     }

@@ -16,13 +16,7 @@ const generateToken = (res: Response, userId: string) => {
   return token;
 };
 
-const clearToken = (res: Response, clearCookie: boolean) => {
-  if (clearCookie) {
-    res.cookie("jwt-access-key", "", {
-      httpOnly: true,
-      expires: new Date(0),
-    });
-  }
+const clearToken = (res: Response) => {
   res.status(200).json({ name: "", email: "" });
 };
 

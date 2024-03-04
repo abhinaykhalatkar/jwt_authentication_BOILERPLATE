@@ -5,7 +5,7 @@ import { RootState } from "../../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
-interface FormInputs {
+interface LoginFormInputs {
   email: string;
   password: string;
 }
@@ -15,7 +15,7 @@ const LogIn: React.FC = () => {
 
   const dispatch = useDispatch();
 
-  const [values, setValues] = useState<FormInputs>({
+  const [values, setValues] = useState<LoginFormInputs>({
     email: "",
     password: "",
   });
@@ -52,12 +52,6 @@ const LogIn: React.FC = () => {
 
   const HandleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // dispatch(
-    //   addUser({
-    //     isLoggedIn: values.email ? true : false,
-    //     userEmail: values.email,
-    //   })
-    // );
     postData();
     // setValues({ email: "", password: "" });
   };
