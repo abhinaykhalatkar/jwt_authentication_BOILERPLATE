@@ -1,22 +1,25 @@
 import React, { useState, useEffect } from "react";
 import "./Signup.scss";
 import { addUser } from "../../store/slices/userInfoSlice";
-import { RootState } from "../../store/store";
-import { useDispatch, useSelector } from "react-redux";
+// import { RootState } from "../../store/store";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import axios from "axios";
 
 interface SignupFormInputs {
+  name: string;
   email: string;
   password: string;
   passwordRe: string;
 }
 
 export const Signup: React.FC = () => {
-  const userInfo: UserInfo = useSelector((state: RootState) => state.userInfo);
-
+  // const userInfo: UserInfo = useSelector((state: RootState) => state.userInfo);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [values, setValues] = useState<SignupFormInputs>({
+    name: "",
     email: "",
     password: "",
     passwordRe: "",
@@ -29,39 +32,50 @@ export const Signup: React.FC = () => {
       ...prevValues,
       [name]: value,
     }));
-    setIsPasswordMatched(
-      values.password === values.passwordRe && values.password !== ""
-    );
+    // setIsPasswordMatched(values.password === values.passwordRe);
   };
 
-  const postData = async () => {
+  const registerHandler = async () => {
     try {
-      const response = await axios.post(
-        process.env.REACT_APP_SIGNUP_LINK!,
-        values
-      );
-      const token = response.headers["authorization"]
-        ? response.headers["authorization"].split(" ")[1]
-        : "";
-      localStorage.setItem(process.env.REACT_APP_T0509!, token);
-      dispatch(
-        addUser({
-          isLoggedIn: response.data.hasOwnProperty("name"),
-          userEmail: response.data.email,
-        })
-      );
+      const response = await axios.post(process.env.REACT_APP_SIGNUP_LINK!, {
+        name: values.name,
+        email: values.email,
+        password: values.password,
+      });
+
+      if (response.status === 201) {
+        const token = response.headers["authorization"]
+          ? response.headers["authorization"].split(" ")[1]
+          : "";
+        localStorage.setItem(process.env.REACT_APP_T0509!, token);
+        dispatch(
+          addUser({
+            isLoggedIn: response.data.hasOwnProperty("name"),
+            userEmail: response.data.email,
+          })
+        );
+        navigate("/");
+      } else if (response.status === 400) console.log(response.data.message);
+      else {
+        console.log("something went wrong");
+      }
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
   useEffect(() => {
-    console.log(isPasswordMatched);
-  }, [isPasswordMatched]);
+    setIsPasswordMatched(
+      values.password === values.passwordRe &&
+        values.password !== "" &&
+        values.password.length > 7
+    );
+  }, [values]);
 
   const HandleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    postData();
+    registerHandler();
+
     // setValues({ email: "", password: "" });
   };
 
@@ -69,6 +83,16 @@ export const Signup: React.FC = () => {
     <div>
       <h2>Sign Up</h2>
       <form onSubmit={HandleSubmit}>
+        <div>
+          <label>UserName:</label>
+          <input
+            type="text"
+            name="name"
+            value={values.name}
+            onChange={handleChange}
+            required
+          />
+        </div>
         <div>
           <label>Email:</label>
           <input

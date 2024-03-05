@@ -15,8 +15,11 @@ export const initialAuthenticate = asyncHandler(
         clearToken(res);
         return;
       }
+
       const jwtSecret = process.env.JWT_SECRET || "";
+      console.log(jwt.verify(token, jwtSecret));
       const decoded = jwt.verify(token, jwtSecret) as JwtPayload;
+      console.log("here");
 
       if (!decoded || !decoded.userId) {
         clearToken(res);
@@ -41,7 +44,8 @@ export const initialAuthenticate = asyncHandler(
         email: user.email,
       });
     } catch (e) {
-      throw console.log("Invalid token");
+      res.status(400).json({ message: "Error with request" });
+      // throw console.log("Invalid token");
     }
   }
 );

@@ -41,8 +41,11 @@ function App() {
             })
           );
         } else if (response.status === 400) console.log(response.data.message);
+        else {
+          console.log("something went wrong");
+        }
       } catch (error) {
-        console.error("Error:", error);
+        console.error("Error:");
       }
     }
   };

@@ -28,7 +28,7 @@ const LogIn: React.FC = () => {
     }));
   };
 
-  const postData = async () => {
+  const loginHandler = async () => {
     try {
       const response = await axios.post(
         process.env.REACT_APP_LOGIN_LINK!,
@@ -52,7 +52,7 @@ const LogIn: React.FC = () => {
 
   const HandleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    postData();
+    loginHandler();
     // setValues({ email: "", password: "" });
   };
 
