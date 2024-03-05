@@ -32,12 +32,15 @@ function App() {
           {},
           { headers }
         );
-        dispatch(
-          addUser({
-            isLoggedIn: response.data.hasOwnProperty("name"),
-            userEmail: response.data.email,
-          })
-        );
+
+        if (response.status === 201) {
+          dispatch(
+            addUser({
+              isLoggedIn: response.data.hasOwnProperty("name"),
+              userEmail: response.data.email,
+            })
+          );
+        } else if (response.status === 400) console.log(response.data.message);
       } catch (error) {
         console.error("Error:", error);
       }

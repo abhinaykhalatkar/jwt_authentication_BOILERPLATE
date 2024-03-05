@@ -11,24 +11,24 @@ export const authenticate = asyncHandler(
       let token = req.cookies.jwt;
 
       if (!token) {
-        clearToken(res, false);
+        clearToken(res);
       }
 
       const jwtSecret = process.env.JWT_SECRET || "";
       const decoded = jwt.verify(token, jwtSecret) as JwtPayload;
 
       if (!decoded || !decoded.userId) {
-        clearToken(res, true);
+        clearToken(res);
       }
 
       if (decoded.exp && Date.now() >= decoded.exp * 1000) {
-        clearToken(res, true);
+        clearToken(res);
       }
 
       const user = await User.findById(decoded.userId, "_id name email");
 
       if (!user) {
-        clearToken(res, true);
+        clearToken(res);
       }
 
       req.user = user;

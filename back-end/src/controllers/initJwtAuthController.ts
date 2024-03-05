@@ -13,10 +13,8 @@ export const initialAuthenticate = asyncHandler(
 
       if (!token) {
         clearToken(res);
-        res.status(401).json({ message: "No token" });
         return;
       }
-
       const jwtSecret = process.env.JWT_SECRET || "";
       const decoded = jwt.verify(token, jwtSecret) as JwtPayload;
 
@@ -29,24 +27,21 @@ export const initialAuthenticate = asyncHandler(
         clearToken(res);
         return;
       }
-      // const user: { name: string; email: string; password: string } | null =
-      // await User.findOne({ _id: decoded.userId });
 
       const user = await User.findOne({ _id: decoded.userId });
-
       if (!user) {
         clearToken(res);
         return;
       }
 
-      if (user && user.name)
-        res.status(201).json({
-          // id: user._id,
-          name: user.name,
-          email: user.email,
-        });
+      if (user && user.name) console.log("here5");
+      res.status(201).json({
+        // id: user._id,
+        name: user.name,
+        email: user.email,
+      });
     } catch (e) {
-      throw console.log("Invalid tokens");
+      throw console.log("Invalid token");
     }
   }
 );
