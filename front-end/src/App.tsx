@@ -1,7 +1,7 @@
 import "./App.scss";
 import { Link, Route, Routes, Navigate } from "react-router-dom";
 import { useEffect } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import Home from "./Pages/Home/Home";
 import LogIn from "./Pages/LogIn/LogIn";
 import Live from "./Pages/Live/Live";
@@ -40,12 +40,9 @@ function App() {
               userEmail: response.data.email,
             })
           );
-        } else if (response.status === 400) console.log(response.data.message);
-        else {
-          console.log("something went wrong");
-        }
+        } else if (response.status === 309) console.log(response.data.message);
       } catch (error) {
-        console.error("Error:");
+        console.error(`error ${error}`);
       }
     }
   };

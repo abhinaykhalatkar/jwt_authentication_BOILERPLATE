@@ -11,7 +11,7 @@ const generateToken = (res: Response, userId: string) => {
 };
 
 const clearToken = (res: Response) => {
-  res.status(400).json({ message: "Error with authentication using key" });
+  res.status(309).json({ message: "Error with authentication using key" });
 };
 
 export { generateToken, clearToken };
